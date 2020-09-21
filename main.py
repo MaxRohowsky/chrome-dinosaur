@@ -9,10 +9,10 @@ SCREEN_WIDTH = 1100
 SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 RUNNING = [pygame.image.load(os.path.join("Assets/Dino", "DinoRun1.png")),
-       pygame.image.load(os.path.join("Assets/Dino", "DinoRun2.png"))]
+           pygame.image.load(os.path.join("Assets/Dino", "DinoRun2.png"))]
 JUMPING = pygame.image.load(os.path.join("Assets/Dino", "DinoJump.png"))
 DUCKING = [pygame.image.load(os.path.join("Assets/Dino", "DinoDuck1.png")),
-        pygame.image.load(os.path.join("Assets/Dino", "DinoDuck2.png"))]
+           pygame.image.load(os.path.join("Assets/Dino", "DinoDuck2.png"))]
 
 SMALL_CACTUS = [pygame.image.load(os.path.join("Assets/Cactus", "SmallCactus1.png")),
                 pygame.image.load(os.path.join("Assets/Cactus", "SmallCactus2.png")),
@@ -99,7 +99,6 @@ class Dinosaur:
             self.jump_vel = self.JUMP_VEL
 
     def draw(self, SCREEN):
-        # pygame.draw.rect(SCREEN, (0,0,0), self.dino_rect, 2)
         SCREEN.blit(self.image, (self.dino_rect.x, self.dino_rect.y))
 
 
@@ -113,7 +112,7 @@ class Cloud:
     def update(self):
         self.x -= game_speed
         if self.x < -self.width:
-            self.x = SCREEN_WIDTH + random.randint(1000, 1600)
+            self.x = SCREEN_WIDTH + random.randint(2500, 3000)
             self.y = random.randint(50, 100)
 
     def draw(self, SCREEN):
@@ -131,10 +130,8 @@ class Obstacle:
         self.rect.x -= game_speed
         if self.rect.x < -self.rect.width:
             obstacles.pop()
-            del self
 
     def draw(self, SCREEN):
-        # pygame.draw.rect(SCREEN, (0, 0, 0), self.rect, 2)
         SCREEN.blit(self.image[self.type], self.rect)
 
 
@@ -167,21 +164,18 @@ class Bird(Obstacle):
 
 
 def main():
-    global obstacles, game_speed, x_pos_bg, y_pos_bg, points
+    global game_speed, x_pos_bg, y_pos_bg, points, obstacles
     run = True
-    font = pygame.font.Font('freesansbold.ttf', 15)
     clock = pygame.time.Clock()
+    player = Dinosaur()
+    cloud = Cloud()
+    game_speed = 20
     x_pos_bg = 0
     y_pos_bg = 380
-    game_speed = 14
     points = 0
-    player = Dinosaur()
-    clouds = []
+    font = pygame.font.Font('freesansbold.ttf', 20)
     obstacles = []
     death_count = 0
-
-    for i in range(0, 2):
-        clouds.append(Cloud())
 
     def score():
         global points, game_speed
@@ -210,7 +204,6 @@ def main():
                 run = False
 
         SCREEN.fill((255, 255, 255))
-        background()
         userInput = pygame.key.get_pressed()
 
         player.draw(SCREEN)
@@ -232,9 +225,10 @@ def main():
                 death_count += 1
                 menu(death_count)
 
-        for cloud in clouds:
-            cloud.draw(SCREEN)
-            cloud.update()
+        background()
+
+        cloud.draw(SCREEN)
+        cloud.update()
 
         score()
 
@@ -258,17 +252,15 @@ def menu(death_count):
             scoreRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 50)
             SCREEN.blit(score, scoreRect)
         textRect = text.get_rect()
-        textRect.center = (SCREEN_WIDTH//2, SCREEN_HEIGHT//2)
+        textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
         SCREEN.blit(text, textRect)
-        SCREEN.blit(RUNNING[0], (SCREEN_WIDTH//2-20, SCREEN_HEIGHT//2-140))
+        SCREEN.blit(RUNNING[0], (SCREEN_WIDTH // 2 - 20, SCREEN_HEIGHT // 2 - 140))
         pygame.display.update()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
             if event.type == pygame.KEYDOWN:
                 main()
-    pygame.quit()
 
 
 menu(death_count=0)
-
