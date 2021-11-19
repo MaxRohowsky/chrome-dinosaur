@@ -118,8 +118,8 @@ class Cloud:
     def draw(self, SCREEN):
         SCREEN.blit(self.image, (self.x, self.y))
 
-class Theme:
-    def theme_menu(death_count):
+class Difficult:
+    def difficult_menu(death_count):
         while True:
             SCREEN.fill((255, 255, 255))
             main_font = pygame.font.Font('freesansbold.ttf', 40)
@@ -289,7 +289,7 @@ def menu(death_count):
                 run = False
             if event.type == pygame.KEYDOWN:
                 if(pygame.key.name(event.key) == 'd'):
-                    Theme.theme_menu(death_count)
+                    Difficult.difficult_menu(death_count)
                 main()
 
 
