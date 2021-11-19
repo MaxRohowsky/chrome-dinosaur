@@ -120,22 +120,72 @@ class Cloud:
 
 class Difficult:
     def difficult_menu(death_count):
+        diff = 0
         while True:
             SCREEN.fill((255, 255, 255))
             main_font = pygame.font.Font('freesansbold.ttf', 40)
+            diff_dis_font = pygame.font.Font('freesansbold.ttf', 25)
             theme_main_text = main_font.render("Change difficult", True, (0, 0, 0))
             theme_main_textRect = theme_main_text.get_rect()
             theme_main_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 200)
             SCREEN.blit(theme_main_text, theme_main_textRect)
+            diff_dis1_text = diff_dis_font.render("Easy: press 1  Medium: press 2", True, (0, 0, 0))
+            diff_dis1_textRect = diff_dis1_text.get_rect()
+            diff_dis1_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2-30)
+            SCREEN.blit(diff_dis1_text, diff_dis1_textRect)
+            diff_dis2_text = diff_dis_font.render("Hard: press 3  VeryHard: press 4", True, (0, 0, 0))
+            diff_dis2_textRect = diff_dis2_text.get_rect()
+            diff_dis2_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 30)
+            SCREEN.blit(diff_dis2_text, diff_dis2_textRect)
+            diff_end_text = diff_dis_font.render("If you wand to Exit, press e", True, (0, 0, 0))
+            diff_end_textRect = diff_end_text.get_rect()
+            diff_end_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 100)
+            SCREEN.blit(diff_end_text, diff_end_textRect)
+            if(diff == 1):
+                diff_font = pygame.font.Font('freesansbold.ttf', 20)
+                # Easy 난이도
+                diff_text = diff_font.render("Difficult change to Easy", True, (0, 0, 0))
+                diff_textRect = diff_text.get_rect()
+                diff_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 200)
+                SCREEN.blit(diff_text, diff_textRect)
+            if(diff == 2):
+                diff_font = pygame.font.Font('freesansbold.ttf', 20)
+                # Medium 난이도
+                diff_text = diff_font.render("Difficult change to Medium", True, (0, 0, 0))
+                diff_textRect = diff_text.get_rect()
+                diff_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 200)
+                SCREEN.blit(diff_text, diff_textRect)
+            if(diff == 3):
+                diff_font = pygame.font.Font('freesansbold.ttf', 20)
+                # Hard 난이도
+                diff_text = diff_font.render("Difficult change to Hard", True, (0, 0, 0))
+                diff_textRect = diff_text.get_rect()
+                diff_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 200)
+                SCREEN.blit(diff_text, diff_textRect)
+            if(diff == 4):
+                diff_font = pygame.font.Font('freesansbold.ttf', 20)
+                # VeryHard 난이도
+                diff_text = diff_font.render("Difficult change to VeryHard", True, (0, 0, 0))
+                diff_textRect = diff_text.get_rect()
+                diff_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 200)
+                SCREEN.blit(diff_text, diff_textRect)
             pygame.display.update()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     run = False
                 if event.type == pygame.KEYDOWN:
+                    # 키보드 1을 눌렀을 때
                     if(pygame.key.name(event.key) == '1'):
+                        diff = 1
+                    if(pygame.key.name(event.key) == '2'):
+                        diff = 2
+                    if(pygame.key.name(event.key) == '3'):
+                        diff = 3
+                    if(pygame.key.name(event.key) == '4'):
+                        diff = 4
+                    if(pygame.key.name(event.key) == "e"):
                         menu(death_count)
-
 class Obstacle:
     def __init__(self, image, type):
         self.image = image
