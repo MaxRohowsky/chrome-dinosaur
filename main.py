@@ -118,6 +118,23 @@ class Cloud:
     def draw(self, SCREEN):
         SCREEN.blit(self.image, (self.x, self.y))
 
+class Difficult:
+    def difficult_menu(death_count):
+        while True:
+            SCREEN.fill((255, 255, 255))
+            main_font = pygame.font.Font('freesansbold.ttf', 40)
+            theme_main_text = main_font.render("Change difficult", True, (0, 0, 0))
+            theme_main_textRect = theme_main_text.get_rect()
+            theme_main_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 200)
+            SCREEN.blit(theme_main_text, theme_main_textRect)
+            pygame.display.update()
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    run = False
+                if event.type == pygame.KEYDOWN:
+                    if(pygame.key.name(event.key) == '1'):
+                        menu(death_count)
 
 class Obstacle:
     def __init__(self, image, type):
@@ -153,7 +170,13 @@ class Bird(Obstacle):
     def __init__(self, image):
         self.type = 0
         super().__init__(image, self.type)
-        self.rect.y = 250
+        yrand = random.randint(0, 2)
+        if(yrand == 0):
+            self.rect.y = 150
+        if(yrand == 1):
+            self.rect.y = 250
+        if(yrand == 2):
+            self.rect.y = 300
         self.index = 0
 
     def draw(self, SCREEN):
@@ -251,6 +274,10 @@ def menu(death_count):
             scoreRect = score.get_rect()
             scoreRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 50)
             SCREEN.blit(score, scoreRect)
+        theme_text = font.render("If you want to change difficult, press d", True, (0, 0, 0))
+        theme_textRect = theme_text.get_rect()
+        theme_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 100)
+        SCREEN.blit(theme_text, theme_textRect)
         textRect = text.get_rect()
         textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
         SCREEN.blit(text, textRect)
@@ -258,8 +285,11 @@ def menu(death_count):
         pygame.display.update()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                pygame.quit()
                 run = False
             if event.type == pygame.KEYDOWN:
+                if(pygame.key.name(event.key) == 'd'):
+                    Difficult.difficult_menu(death_count)
                 main()
 
 
