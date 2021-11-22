@@ -4,6 +4,8 @@ import random
 pygame.init()
 
 # Global Constants
+SET_SPEED = 20
+INCREASE_RATE = 1
 SCREEN_HEIGHT = 600
 SCREEN_WIDTH = 1100
 SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -120,6 +122,7 @@ class Cloud:
 
 class Difficult:
     def difficult_menu(death_count):
+        global SET_SPEED, INCREASE_RATE
         diff = 0
         while True:
             SCREEN.fill((255, 255, 255))
@@ -141,6 +144,7 @@ class Difficult:
             diff_end_textRect = diff_end_text.get_rect()
             diff_end_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 100)
             SCREEN.blit(diff_end_text, diff_end_textRect)
+
             if(diff == 1):
                 diff_font = pygame.font.Font('freesansbold.ttf', 20)
                 # Easy 난이도
@@ -148,6 +152,9 @@ class Difficult:
                 diff_textRect = diff_text.get_rect()
                 diff_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 200)
                 SCREEN.blit(diff_text, diff_textRect)
+                # Easy Speed
+                SET_SPEED = 20 # Start Speed
+                INCREASE_RATE = 1 # 1 increase per 100 points.
             if(diff == 2):
                 diff_font = pygame.font.Font('freesansbold.ttf', 20)
                 # Medium 난이도
@@ -155,6 +162,9 @@ class Difficult:
                 diff_textRect = diff_text.get_rect()
                 diff_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 200)
                 SCREEN.blit(diff_text, diff_textRect)
+                # Medium Speed
+                SET_SPEED = 30
+                INCREASE_RATE = 1
             if(diff == 3):
                 diff_font = pygame.font.Font('freesansbold.ttf', 20)
                 # Hard 난이도
@@ -162,6 +172,9 @@ class Difficult:
                 diff_textRect = diff_text.get_rect()
                 diff_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 200)
                 SCREEN.blit(diff_text, diff_textRect)
+                # Hard Speed
+                SET_SPEED = 40
+                INCREASE_RATE = 2
             if(diff == 4):
                 diff_font = pygame.font.Font('freesansbold.ttf', 20)
                 # VeryHard 난이도
@@ -169,6 +182,10 @@ class Difficult:
                 diff_textRect = diff_text.get_rect()
                 diff_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 200)
                 SCREEN.blit(diff_text, diff_textRect)
+                # VeryHard Speed
+                SET_SPEED = 50
+                INCREASE_RATE = 3
+
             pygame.display.update()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -237,12 +254,12 @@ class Bird(Obstacle):
 
 
 def main():
-    global game_speed, x_pos_bg, y_pos_bg, points, obstacles
+    global SET_SPEED, game_speed, x_pos_bg, y_pos_bg, points, obstacles
     run = True
     clock = pygame.time.Clock()
     player = Dinosaur()
     cloud = Cloud()
-    game_speed = 20
+    game_speed = SET_SPEED
     x_pos_bg = 0
     y_pos_bg = 380
     points = 0
@@ -251,10 +268,10 @@ def main():
     death_count = 0
 
     def score():
-        global points, game_speed
+        global points, game_speed, INCREASE_RATE
         points += 1
         if points % 100 == 0:
-            game_speed += 1
+            game_speed += INCREASE_RATE
 
         text = font.render("Points: " + str(points), True, (0, 0, 0))
         textRect = text.get_rect()
