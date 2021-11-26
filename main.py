@@ -9,6 +9,7 @@ INCREASE_RATE = 1
 SCREEN_HEIGHT = 600
 SCREEN_WIDTH = 1100
 SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+SCREEN_BG = (255, 255, 255)
 
 RUNNING = [pygame.image.load(os.path.join("Assets/Dino", "DinoRun1.png")),
            pygame.image.load(os.path.join("Assets/Dino", "DinoRun2.png"))]
@@ -203,6 +204,106 @@ class Difficult:
                         diff = 4
                     if(pygame.key.name(event.key) == "e"):
                         menu(death_count)
+
+class Theme:
+    def selectTheme(death_count):
+        global RUNNING, JUMPING, DUCKING, SMALL_CACTUS, LARGE_CACTUS, BIRD, CLOUD, BG, SCREEN_BG
+        themeStatus = 0
+        while True:
+            SCREEN.fill((255, 255, 255))
+            main_font = pygame.font.Font('freesansbold.ttf', 40)
+            diff_dis_font = pygame.font.Font('freesansbold.ttf', 25)
+            theme_main_text = main_font.render("Change Theme", True, (0, 0, 0))
+            theme_main_textRect = theme_main_text.get_rect()
+            theme_main_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 200)
+            SCREEN.blit(theme_main_text, theme_main_textRect)
+            diff_dis1_text = diff_dis_font.render("Default: press 1  Supermario: press 2", True, (0, 0, 0))
+            diff_dis1_textRect = diff_dis1_text.get_rect()
+            diff_dis1_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 30)
+            SCREEN.blit(diff_dis1_text, diff_dis1_textRect)
+            diff_dis2_text = diff_dis_font.render("???: press 3  ??: press 4", True, (0, 0, 0))
+            diff_dis2_textRect = diff_dis2_text.get_rect()
+            diff_dis2_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 30)
+            SCREEN.blit(diff_dis2_text, diff_dis2_textRect)
+            diff_end_text = diff_dis_font.render("Exit : press E", True, (0, 0, 0))
+            diff_end_textRect = diff_end_text.get_rect()
+            diff_end_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 100)
+            SCREEN.blit(diff_end_text, diff_end_textRect)
+
+            if (themeStatus == 1):
+                diff_font = pygame.font.Font('freesansbold.ttf', 20)
+                # 1번 : Default
+                diff_text = diff_font.render("Changed to Default Theme", True, (0, 0, 0))
+                diff_textRect = diff_text.get_rect()
+                diff_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 200)
+                SCREEN.blit(diff_text, diff_textRect)
+                # Assets Setting
+                SCREEN_BG = (255, 255, 255)
+                RUNNING = [pygame.image.load(os.path.join("Assets/Dino", "DinoRun1.png")),
+                           pygame.image.load(os.path.join("Assets/Dino", "DinoRun2.png"))]
+                JUMPING = pygame.image.load(os.path.join("Assets/Dino", "DinoJump.png"))
+                DUCKING = [pygame.image.load(os.path.join("Assets/Dino", "DinoDuck1.png")),
+                           pygame.image.load(os.path.join("Assets/Dino", "DinoDuck2.png"))]
+
+                SMALL_CACTUS = [pygame.image.load(os.path.join("Assets/Cactus", "SmallCactus1.png")),
+                                pygame.image.load(os.path.join("Assets/Cactus", "SmallCactus2.png")),
+                                pygame.image.load(os.path.join("Assets/Cactus", "SmallCactus3.png"))]
+                LARGE_CACTUS = [pygame.image.load(os.path.join("Assets/Cactus", "LargeCactus1.png")),
+                                pygame.image.load(os.path.join("Assets/Cactus", "LargeCactus2.png")),
+                                pygame.image.load(os.path.join("Assets/Cactus", "LargeCactus3.png"))]
+
+                BIRD = [pygame.image.load(os.path.join("Assets/Bird", "Bird1.png")),
+                        pygame.image.load(os.path.join("Assets/Bird", "Bird2.png"))]
+
+                CLOUD = pygame.image.load(os.path.join("Assets/Other", "Cloud.png"))
+
+                BG = pygame.image.load(os.path.join("Assets/Other", "Track.png"))
+
+            if (themeStatus == 2):
+                diff_font = pygame.font.Font('freesansbold.ttf', 20)
+                # 2번 : Supermario
+                diff_text = diff_font.render("Changed to Supermario Theme", True, (0, 0, 0))
+                diff_textRect = diff_text.get_rect()
+                diff_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 200)
+                SCREEN.blit(diff_text, diff_textRect)
+                SCREEN_BG = (178, 204, 255) # TEST
+
+            if (themeStatus == 3):
+                diff_font = pygame.font.Font('freesansbold.ttf', 20)
+                # 3번 :
+                diff_text = diff_font.render("Changed to ??", True, (0, 0, 0))
+                diff_textRect = diff_text.get_rect()
+                diff_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 200)
+                SCREEN.blit(diff_text, diff_textRect)
+
+            if (themeStatus == 4):
+                diff_font = pygame.font.Font('freesansbold.ttf', 20)
+                # 4번 :
+                diff_text = diff_font.render("Changed to ???", True, (0, 0, 0))
+                diff_textRect = diff_text.get_rect()
+                diff_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 200)
+                SCREEN.blit(diff_text, diff_textRect)
+
+
+            pygame.display.update()
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    run = False
+                if event.type == pygame.KEYDOWN:
+                    # 키보드 1을 눌렀을 때
+                    if (pygame.key.name(event.key) == '1'):
+                        themeStatus = 1
+                    if (pygame.key.name(event.key) == '2'):
+                        themeStatus = 2
+                    if (pygame.key.name(event.key) == '3'):
+                        themeStatus = 3
+                    if (pygame.key.name(event.key) == '4'):
+                        themeStatus = 4
+                    if (pygame.key.name(event.key) == "e"):
+                        menu(death_count)
+
+
 class Obstacle:
     def __init__(self, image, type):
         self.image = image
@@ -293,7 +394,7 @@ def main():
             if event.type == pygame.QUIT:
                 run = False
 
-        SCREEN.fill((255, 255, 255))
+        SCREEN.fill(SCREEN_BG) # 스크린 배경
         userInput = pygame.key.get_pressed()
 
         player.draw(SCREEN)
@@ -341,10 +442,16 @@ def menu(death_count):
             scoreRect = score.get_rect()
             scoreRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 50)
             SCREEN.blit(score, scoreRect)
-        theme_text = font.render("If you want to change difficult, press d", True, (0, 0, 0))
+        theme_text = font.render("Change Difficulty : D", True, (0, 0, 0))
         theme_textRect = theme_text.get_rect()
         theme_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 100)
         SCREEN.blit(theme_text, theme_textRect)
+
+        theme2_text = font.render("Change Theme : T", True, (0, 0, 0))
+        theme2_textRect = theme2_text.get_rect()
+        theme2_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 150)
+        SCREEN.blit(theme2_text, theme2_textRect)
+
         textRect = text.get_rect()
         textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
         SCREEN.blit(text, textRect)
@@ -357,6 +464,8 @@ def menu(death_count):
             if event.type == pygame.KEYDOWN:
                 if(pygame.key.name(event.key) == 'd'):
                     Difficult.difficult_menu(death_count)
+                if (pygame.key.name(event.key) == 't'):
+                    Theme.selectTheme(death_count)
                 main()
 
 
