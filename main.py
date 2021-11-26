@@ -1,6 +1,7 @@
 import pygame
 import os
 import random
+import requests
 pygame.init()
 
 # Global Constants
@@ -30,6 +31,7 @@ CLOUD = pygame.image.load(os.path.join("Assets/Other", "Cloud.png"))
 
 BG = pygame.image.load(os.path.join("Assets/Other", "Track.png"))
 
+SCORE = []
 
 class Dinosaur:
     X_POS = 80
@@ -203,6 +205,41 @@ class Difficult:
                         diff = 4
                     if(pygame.key.name(event.key) == "e"):
                         menu(death_count)
+
+
+
+
+class Score:
+    def score(death_count):
+        font = pygame.font.Font('freesansbold.ttf', 40)
+        score_font = pygame.font.Font('freesansbold.ttf', 20)
+        while True:
+            SCREEN.fill((255, 255, 255))
+            title_text = font.render("Score Board", True, (0, 0, 0))
+            title_textRect = title_text.get_rect()
+            title_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 -180)
+            SCREEN.blit(title_text, title_textRect)
+            for i in range(5):
+                if(len(SCORE) <= i):
+                    score_text = score_font.render((str)(i+1) + ". empty", True, (0, 0, 0))
+                    score_textRect = score_text.get_rect()
+                    score_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 80 + (i*50))
+                    SCREEN.blit(score_text, score_textRect)
+                else:
+                    score_text = score_font.render((str)(i+1) + ". " + (str)(SCORE[i]), True, (0, 0, 0))
+                    score_textRect = score_text.get_rect()
+                    score_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 80 + (i*50))
+                    SCREEN.blit(score_text, score_textRect)
+
+            for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                        run = False
+                    if event.type == pygame.KEYDOWN:
+                        if(pygame.key.name(event.key) == "e"):
+                            menu(death_count)
+            pygame.display.update()
+
 class Obstacle:
     def __init__(self, image, type):
         self.image = image
@@ -277,6 +314,7 @@ def main():
         textRect = text.get_rect()
         textRect.center = (1000, 40)
         SCREEN.blit(text, textRect)
+        
 
     def background():
         global x_pos_bg, y_pos_bg
@@ -287,7 +325,7 @@ def main():
             SCREEN.blit(BG, (image_width + x_pos_bg, y_pos_bg))
             x_pos_bg = 0
         x_pos_bg -= game_speed
-
+        
     while run:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -312,6 +350,7 @@ def main():
             obstacle.update()
             if player.dino_rect.colliderect(obstacle.rect):
                 pygame.time.delay(2000)
+                SCORE.append(points)
                 death_count += 1
                 menu(death_count)
 
@@ -329,10 +368,18 @@ def main():
 def menu(death_count):
     global points
     run = True
+    SCORE.sort(reverse = True)
+    for i in range(len(SCORE)):
+        if( i >= 5):
+            break
+        datas = {
+            (str)(i+1) : SCORE[i]
+        }
+        url = "https://df9c-2001-2d8-6b27-2b4-d37-db4d-ae06-3479.ngrok.io/user/v1/data"
+        response = requests.post(url, data=datas)
     while run:
         SCREEN.fill((255, 255, 255))
         font = pygame.font.Font('freesansbold.ttf', 30)
-
         if death_count == 0:
             text = font.render("Press any Key to Start", True, (0, 0, 0))
         elif death_count > 0:
@@ -341,10 +388,14 @@ def menu(death_count):
             scoreRect = score.get_rect()
             scoreRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 50)
             SCREEN.blit(score, scoreRect)
-        theme_text = font.render("If you want to change difficult, press d", True, (0, 0, 0))
-        theme_textRect = theme_text.get_rect()
-        theme_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 100)
-        SCREEN.blit(theme_text, theme_textRect)
+        diff_text = font.render("If you want to change difficult, press d", True, (0, 0, 0))
+        diff_textRect = diff_text.get_rect()
+        diff_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 100)
+        SCREEN.blit(diff_text, diff_textRect)
+        reader_text = font.render("If you want to show readerboard, press r", True, (0, 0, 0))
+        reader_textRect = reader_text.get_rect()
+        reader_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 150)
+        SCREEN.blit(reader_text, reader_textRect)
         textRect = text.get_rect()
         textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
         SCREEN.blit(text, textRect)
@@ -357,6 +408,8 @@ def menu(death_count):
             if event.type == pygame.KEYDOWN:
                 if(pygame.key.name(event.key) == 'd'):
                     Difficult.difficult_menu(death_count)
+                if(pygame.key.name(event.key) == 'r'):
+                    Score.score(death_count)
                 main()
 
 
