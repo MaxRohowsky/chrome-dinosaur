@@ -266,7 +266,29 @@ class Theme:
                 diff_textRect = diff_text.get_rect()
                 diff_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 200)
                 SCREEN.blit(diff_text, diff_textRect)
-                SCREEN_BG = (178, 204, 255) # TEST
+                SCREEN_BG = (77, 184, 255)
+                RUNNING = [pygame.image.load(os.path.join("Assets/Mario_Theme/Mario", "MarioRun1.png")),
+                           pygame.image.load(os.path.join("Assets/Mario_Theme/Mario", "MarioRun2.png"))]
+                JUMPING = pygame.image.load(os.path.join("Assets/Mario_Theme/Mario", "MarioJump.png"))
+                DUCKING = [pygame.image.load(os.path.join("Assets/Mario_Theme/Mario", "MarioDuck1.png")),
+                           pygame.image.load(os.path.join("Assets/Mario_Theme/Mario", "MarioDuck2.png"))]
+
+                SMALL_CACTUS = [pygame.image.load(os.path.join("Assets/Cactus", "SmallCactus1.png")),
+                                pygame.image.load(os.path.join("Assets/Cactus", "SmallCactus2.png")),
+                                pygame.image.load(os.path.join("Assets/Cactus", "SmallCactus3.png"))]
+                LARGE_CACTUS = [pygame.image.load(os.path.join("Assets/Cactus", "LargeCactus1.png")),
+                                pygame.image.load(os.path.join("Assets/Cactus", "LargeCactus2.png")),
+                                pygame.image.load(os.path.join("Assets/Cactus", "LargeCactus3.png"))]
+
+                BIRD = [pygame.image.load(os.path.join("Assets/Bird", "Bird1.png")),
+                        pygame.image.load(os.path.join("Assets/Bird", "Bird2.png"))]
+
+                CLOUD = pygame.image.load(os.path.join("Assets/Other", "Cloud.png"))
+                Dinosaur.Y_POS_DUCK = 320
+                
+
+
+                BG = pygame.image.load(os.path.join("Assets/Mario_Theme/M_Other", "M_Track.png"))
 
             if (themeStatus == 3):
                 diff_font = pygame.font.Font('freesansbold.ttf', 20)
