@@ -258,6 +258,7 @@ class Theme:
                 CLOUD = pygame.image.load(os.path.join("Assets/Other", "Cloud.png"))
 
                 BG = pygame.image.load(os.path.join("Assets/Other", "Track.png"))
+                Dinosaur.Y_POS_DUCK = 340
 
             if (themeStatus == 2):
                 diff_font = pygame.font.Font('freesansbold.ttf', 20)
@@ -273,22 +274,19 @@ class Theme:
                 DUCKING = [pygame.image.load(os.path.join("Assets/Mario_Theme/Mario", "MarioDuck1.png")),
                            pygame.image.load(os.path.join("Assets/Mario_Theme/Mario", "MarioDuck2.png"))]
 
-                SMALL_CACTUS = [pygame.image.load(os.path.join("Assets/Cactus", "SmallCactus1.png")),
-                                pygame.image.load(os.path.join("Assets/Cactus", "SmallCactus2.png")),
-                                pygame.image.load(os.path.join("Assets/Cactus", "SmallCactus3.png"))]
-                LARGE_CACTUS = [pygame.image.load(os.path.join("Assets/Cactus", "LargeCactus1.png")),
-                                pygame.image.load(os.path.join("Assets/Cactus", "LargeCactus2.png")),
-                                pygame.image.load(os.path.join("Assets/Cactus", "LargeCactus3.png"))]
+                SMALL_CACTUS = [pygame.image.load(os.path.join("Assets/Mario_Theme/M_Obstacle", "SmallTree.png")),
+                                pygame.image.load(os.path.join("Assets/Mario_Theme/M_Obstacle", "SmallTree2.png")),
+                                pygame.image.load(os.path.join("Assets/Mario_Theme/M_Obstacle", "LargeTree.png"))]
+                LARGE_CACTUS = [pygame.image.load(os.path.join("Assets/Mario_Theme/M_Obstacle", "GreenPipe.png")),
+                                pygame.image.load(os.path.join("Assets/Mario_Theme/M_Obstacle", "LargePipe.png")),
+                                pygame.image.load(os.path.join("Assets/Mario_Theme/M_Obstacle", "LargePipe2.png"))]
 
-                BIRD = [pygame.image.load(os.path.join("Assets/Bird", "Bird1.png")),
-                        pygame.image.load(os.path.join("Assets/Bird", "Bird2.png"))]
+                BIRD = [pygame.image.load(os.path.join("Assets/Mario_Theme/M_Bird", "Bird1.png")),
+                        pygame.image.load(os.path.join("Assets/Mario_Theme/M_Bird", "Bird2.png"))]
 
-                CLOUD = pygame.image.load(os.path.join("Assets/Other", "Cloud.png"))
-                Dinosaur.Y_POS_DUCK = 320
-                
-
-
+                CLOUD = pygame.image.load(os.path.join("Assets/Mario_Theme/M_Other", "M_Cloud.png"))
                 BG = pygame.image.load(os.path.join("Assets/Mario_Theme/M_Other", "M_Track.png"))
+                Dinosaur.Y_POS_DUCK = 320
 
             if (themeStatus == 3):
                 diff_font = pygame.font.Font('freesansbold.ttf', 20)
@@ -347,7 +345,6 @@ class SmallCactus(Obstacle):
         self.type = random.randint(0, 2)
         super().__init__(image, self.type)
         self.rect.y = 325
-
 
 class LargeCactus(Obstacle):
     def __init__(self, image):
