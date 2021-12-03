@@ -519,6 +519,3 @@ def menu(death_count):
                 if (pygame.key.name(event.key) == 't'):
                     Theme.selectTheme(death_count)
                 main()
-
-
-menu(death_count=0)
