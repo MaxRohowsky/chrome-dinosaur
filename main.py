@@ -4,6 +4,10 @@ import random
 import requests
 pygame.init()
 
+import uuid
+ch = uuid.getnode()
+mac = ":".join(("%12X" % ch)[i:i+2] for i in range(0, 12, 2))
+
 # Global Constants
 SET_SPEED = 20
 INCREASE_RATE = 1
