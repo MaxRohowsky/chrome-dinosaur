@@ -31,7 +31,7 @@ BIRD = [pygame.image.load(os.path.join("Assets/Bird", "Bird1.png")),
 CLOUD = pygame.image.load(os.path.join("Assets/Other", "Cloud.png"))
 
 BG = pygame.image.load(os.path.join("Assets/Other", "Track.png"))
-
+themeStatus = 0
 
 class Dinosaur:
     X_POS = 80
@@ -208,8 +208,8 @@ class Difficult:
 
 class Theme:
     def selectTheme(death_count):
-        global RUNNING, JUMPING, DUCKING, SMALL_CACTUS, LARGE_CACTUS, BIRD, CLOUD, BG, SCREEN_BG, FONT_COLOR
-        themeStatus = 0
+        global RUNNING, JUMPING, DUCKING, SMALL_CACTUS, LARGE_CACTUS, BIRD, CLOUD, BG, SCREEN_BG, themeStatus, FONT_COLOR
+
         while True:
             SCREEN.fill((255, 255, 255))
             main_font = pygame.font.Font('freesansbold.ttf', 40)
@@ -228,7 +228,7 @@ class Theme:
             SCREEN.blit(diff_dis2_text, diff_dis2_textRect)
             diff_end_text = diff_dis_font.render("Exit : press E", True, (0, 0, 0))
             diff_end_textRect = diff_end_text.get_rect()
-            diff_end_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 100)
+            diff_end_textRect.center = (SCRsEEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 100)
             SCREEN.blit(diff_end_text, diff_end_textRect)
 
             if (themeStatus == 1):
@@ -366,10 +366,14 @@ class Obstacle:
 
 
 class SmallCactus(Obstacle):
+    global themeStatus
     def __init__(self, image):
         self.type = random.randint(0, 2)
         super().__init__(image, self.type)
-        self.rect.y = 325
+        if(themeStatus == 0 or themeStatus == 1):
+            self.rect.y = 325
+        elif(themeStatus == 2):
+            self.rect.y = 290
 
 class LargeCactus(Obstacle):
     def __init__(self, image):
