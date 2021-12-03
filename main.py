@@ -228,7 +228,7 @@ class Theme:
             SCREEN.blit(diff_dis2_text, diff_dis2_textRect)
             diff_end_text = diff_dis_font.render("Exit : press E", True, (0, 0, 0))
             diff_end_textRect = diff_end_text.get_rect()
-            diff_end_textRect.center = (SCRsEEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 100)
+            diff_end_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 100)
             SCREEN.blit(diff_end_text, diff_end_textRect)
 
             if (themeStatus == 1):
@@ -519,3 +519,7 @@ def menu(death_count):
                 if (pygame.key.name(event.key) == 't'):
                     Theme.selectTheme(death_count)
                 main()
+
+
+
+menu(death_count=0)
