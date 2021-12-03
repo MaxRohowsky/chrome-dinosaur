@@ -33,6 +33,9 @@ CLOUD = pygame.image.load(os.path.join("Assets/Other", "Cloud.png"))
 BG = pygame.image.load(os.path.join("Assets/Other", "Track.png"))
 themeStatus = 0
 
+JUMP_SOUND = pygame.mixer.Sound(os.path.join("Assets/Soundtrack", "jump.mp3"))
+SPEEDUP_SOUND = pygame.mixer.Sound(os.path.join("Assets/Soundtrack", "speedup.mp3"))
+BG_MUSIC = pygame.mixer.Sound(os.path.join("Assets/Soundtrack", "Main_BGM.mp3"))
 class Dinosaur:
     X_POS = 80
     Y_POS = 310
@@ -70,6 +73,7 @@ class Dinosaur:
             self.dino_duck = False
             self.dino_run = False
             self.dino_jump = True
+            JUMP_SOUND.play() # 점프 사운드 한번 재생
         elif userInput[pygame.K_DOWN] and not self.dino_jump:
             self.dino_duck = True
             self.dino_run = False
@@ -208,7 +212,8 @@ class Difficult:
 
 class Theme:
     def selectTheme(death_count):
-        global RUNNING, JUMPING, DUCKING, SMALL_CACTUS, LARGE_CACTUS, BIRD, CLOUD, BG, SCREEN_BG, themeStatus, FONT_COLOR
+        global RUNNING, JUMPING, DUCKING, SMALL_CACTUS, LARGE_CACTUS, BIRD, CLOUD, BG, SCREEN_BG, themeStatus, \
+            FONT_COLOR, JUMP_SOUND, BG_MUSIC, SPEEDUP_SOUND
 
         while True:
             SCREEN.fill((255, 255, 255))
@@ -259,6 +264,11 @@ class Theme:
                 CLOUD = pygame.image.load(os.path.join("Assets/Other", "Cloud.png"))
 
                 BG = pygame.image.load(os.path.join("Assets/Other", "Track.png"))
+
+                JUMP_SOUND = pygame.mixer.Sound(os.path.join("Assets/Soundtrack", "jump.mp3"))
+                SPEEDUP_SOUND = pygame.mixer.Sound(os.path.join("Assets/Soundtrack", "speedup.mp3"))
+                BG_MUSIC = pygame.mixer.Sound(os.path.join("Assets/Soundtrack", "Main_BGM.mp3"))
+
                 Dinosaur.Y_POS_DUCK = 340
                 FONT_COLOR = (0, 0, 0)
 
@@ -288,6 +298,10 @@ class Theme:
 
                 CLOUD = pygame.image.load(os.path.join("Assets/Mario_Theme/M_Other", "M_Cloud.png"))
                 BG = pygame.image.load(os.path.join("Assets/Mario_Theme/M_Other", "M_Track.png"))
+
+                JUMP_SOUND = pygame.mixer.Sound(os.path.join("Assets/Mario_Theme/Soundtrack", "M_Jump.mp3"))
+                SPEEDUP_SOUND = pygame.mixer.Sound(os.path.join("Assets/Mario_Theme/Soundtrack", "Coin.mp3"))
+                BG_MUSIC = pygame.mixer.Sound(os.path.join("Assets/Mario_Theme/Soundtrack", "M_BGM.mp3"))
                 Dinosaur.Y_POS_DUCK = 320
                 FONT_COLOR = (0, 0, 0)
 
@@ -327,6 +341,10 @@ class Theme:
                 CLOUD = pygame.image.load(os.path.join("Assets/Night/Other", "Cloud.png"))
 
                 BG = pygame.image.load(os.path.join("Assets/Night/Other", "Track.png"))
+
+                JUMP_SOUND = pygame.mixer.Sound(os.path.join("Assets/Soundtrack", "jump.mp3"))
+                SPEEDUP_SOUND = pygame.mixer.Sound(os.path.join("Assets/Soundtrack", "speedup.mp3"))
+                BG_MUSIC = pygame.mixer.Sound(os.path.join("Assets/Soundtrack", "Main_BGM.mp3"))
                 Dinosaur.Y_POS_DUCK = 340
                 FONT_COLOR = (255, 255, 255)
 
@@ -420,11 +438,15 @@ def main():
     obstacles = []
     death_count = 0
 
+    BG_MUSIC.play(-1) # BGM 무한재생
+
     def score():
         global points, game_speed, INCREASE_RATE
         points += 1
         if points % 100 == 0:
             game_speed += INCREASE_RATE
+            # 100점 마다 Alert Sound
+            SPEEDUP_SOUND.play()
 
         text = font.render("Points: " + str(points), True, FONT_COLOR)
         textRect = text.get_rect()
@@ -485,7 +507,7 @@ def menu(death_count):
     while run:
         SCREEN.fill((255, 255, 255))
         font = pygame.font.Font('freesansbold.ttf', 30)
-
+        BG_MUSIC.stop()  # BGM 서서히 정지
         if death_count == 0:
             text = font.render("Press any Key to Start", True, (0, 0, 0))
         elif death_count > 0:
