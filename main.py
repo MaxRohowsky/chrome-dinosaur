@@ -10,6 +10,7 @@ SCREEN_HEIGHT = 600
 SCREEN_WIDTH = 1100
 SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 SCREEN_BG = (255, 255, 255)
+FONT_COLOR = (0, 0, 0)
 
 RUNNING = [pygame.image.load(os.path.join("Assets/Dino", "DinoRun1.png")),
            pygame.image.load(os.path.join("Assets/Dino", "DinoRun2.png"))]
@@ -207,8 +208,8 @@ class Difficult:
 
 class Theme:
     def selectTheme(death_count):
-        global RUNNING, JUMPING, DUCKING, SMALL_CACTUS, LARGE_CACTUS, BIRD, CLOUD, BG, SCREEN_BG, themeStatus
-        
+        global RUNNING, JUMPING, DUCKING, SMALL_CACTUS, LARGE_CACTUS, BIRD, CLOUD, BG, SCREEN_BG, themeStatus, FONT_COLOR
+
         while True:
             SCREEN.fill((255, 255, 255))
             main_font = pygame.font.Font('freesansbold.ttf', 40)
@@ -221,13 +222,13 @@ class Theme:
             diff_dis1_textRect = diff_dis1_text.get_rect()
             diff_dis1_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 30)
             SCREEN.blit(diff_dis1_text, diff_dis1_textRect)
-            diff_dis2_text = diff_dis_font.render("???: press 3  ??: press 4", True, (0, 0, 0))
+            diff_dis2_text = diff_dis_font.render("???: press 3  Night: press 4", True, (0, 0, 0))
             diff_dis2_textRect = diff_dis2_text.get_rect()
             diff_dis2_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 30)
             SCREEN.blit(diff_dis2_text, diff_dis2_textRect)
             diff_end_text = diff_dis_font.render("Exit : press E", True, (0, 0, 0))
             diff_end_textRect = diff_end_text.get_rect()
-            diff_end_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 100)
+            diff_end_textRect.center = (SCRsEEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 100)
             SCREEN.blit(diff_end_text, diff_end_textRect)
 
             if (themeStatus == 1):
@@ -259,6 +260,7 @@ class Theme:
 
                 BG = pygame.image.load(os.path.join("Assets/Other", "Track.png"))
                 Dinosaur.Y_POS_DUCK = 340
+                FONT_COLOR = (0, 0, 0)
 
             if (themeStatus == 2):
                 diff_font = pygame.font.Font('freesansbold.ttf', 20)
@@ -287,6 +289,7 @@ class Theme:
                 CLOUD = pygame.image.load(os.path.join("Assets/Mario_Theme/M_Other", "M_Cloud.png"))
                 BG = pygame.image.load(os.path.join("Assets/Mario_Theme/M_Other", "M_Track.png"))
                 Dinosaur.Y_POS_DUCK = 320
+                FONT_COLOR = (0, 0, 0)
 
             if (themeStatus == 3):
                 diff_font = pygame.font.Font('freesansbold.ttf', 20)
@@ -299,11 +302,33 @@ class Theme:
             if (themeStatus == 4):
                 diff_font = pygame.font.Font('freesansbold.ttf', 20)
                 # 4번 :
-                diff_text = diff_font.render("Changed to ???", True, (0, 0, 0))
+                diff_text = diff_font.render("Changed to Night Theme", True, (0, 0, 0))
                 diff_textRect = diff_text.get_rect()
                 diff_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 200)
                 SCREEN.blit(diff_text, diff_textRect)
+                # Assets Setting
+                SCREEN_BG = (53, 53, 53)
+                RUNNING = [pygame.image.load(os.path.join("Assets/Dino", "DinoRun1.png")),
+                           pygame.image.load(os.path.join("Assets/Dino", "DinoRun2.png"))]
+                JUMPING = pygame.image.load(os.path.join("Assets/Dino", "DinoJump.png"))
+                DUCKING = [pygame.image.load(os.path.join("Assets/Dino", "DinoDuck1.png")),
+                           pygame.image.load(os.path.join("Assets/Dino", "DinoDuck2.png"))]
 
+                SMALL_CACTUS = [pygame.image.load(os.path.join("Assets/Night/Cactus", "SmallCactus1.png")),
+                                pygame.image.load(os.path.join("Assets/Night/Cactus", "SmallCactus2.png")),
+                                pygame.image.load(os.path.join("Assets/Night/Cactus", "SmallCactus3.png"))]
+                LARGE_CACTUS = [pygame.image.load(os.path.join("Assets/Night/Cactus", "LargeCactus1.png")),
+                                pygame.image.load(os.path.join("Assets/Night/Cactus", "LargeCactus2.png")),
+                                pygame.image.load(os.path.join("Assets/Night/Cactus", "LargeCactus3.png"))]
+
+                BIRD = [pygame.image.load(os.path.join("Assets/Bird", "Bird1.png")),
+                        pygame.image.load(os.path.join("Assets/Bird", "Bird2.png"))]
+
+                CLOUD = pygame.image.load(os.path.join("Assets/Night/Other", "Cloud.png"))
+
+                BG = pygame.image.load(os.path.join("Assets/Night/Other", "Track.png"))
+                Dinosaur.Y_POS_DUCK = 340
+                FONT_COLOR = (255, 255, 255)
 
             pygame.display.update()
             for event in pygame.event.get():
@@ -401,7 +426,7 @@ def main():
         if points % 100 == 0:
             game_speed += INCREASE_RATE
 
-        text = font.render("Points: " + str(points), True, (0, 0, 0))
+        text = font.render("Points: " + str(points), True, FONT_COLOR)
         textRect = text.get_rect()
         textRect.center = (1000, 40)
         SCREEN.blit(text, textRect)
