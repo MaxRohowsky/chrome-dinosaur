@@ -349,6 +349,10 @@ class SmallCactus(Obstacle):
             self.rect.y = 325
         elif(themeStatus == 2):
             self.rect.y = 290
+        elif(themeStatus == 3):
+            self.rect.y = 325
+        elif(themeStatus == 4):
+            self.rect.y = 325
 
 class LargeCactus(Obstacle):
     def __init__(self, image):
