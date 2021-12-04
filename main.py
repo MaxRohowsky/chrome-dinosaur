@@ -356,6 +356,12 @@ def main():
                 pygame.time.delay(2000)
                 SCORE.append(points)
                 death_count += 1
+                datas = {
+                    "uid" : mac,
+                    "data" : points
+                }
+                url = "https://df9c-2001-2d8-6b27-2b4-d37-db4d-ae06-3479.ngrok.io/user/v1/data"
+                response = requests.post(url, data=datas)
                 menu(death_count)
 
         background()
@@ -373,14 +379,12 @@ def menu(death_count):
     global points
     run = True
     SCORE.sort(reverse = True)
-    for i in range(len(SCORE)):
-        if( i >= 5):
-            break
-        datas = {
-            (str)(i+1) : SCORE[i]
-        }
-        url = "https://df9c-2001-2d8-6b27-2b4-d37-db4d-ae06-3479.ngrok.io/user/v1/data"
-        response = requests.post(url, data=datas)
+
+    datas = {
+        "uid" : mac
+    }
+    url = "https://df9c-2001-2d8-6b27-2b4-d37-db4d-ae06-3479.ngrok.io/user/v1/data"
+    response = requests.post(url, data=datas)
     while run:
         SCREEN.fill((255, 255, 255))
         font = pygame.font.Font('freesansbold.ttf', 30)
