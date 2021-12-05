@@ -1,14 +1,17 @@
 import pygame
 import os
 import random
+# from pygame.constants import MOUSEBUTTONDOWN
 import requests
 pygame.init()
-
 import uuid
 ch = uuid.getnode()
 mac = ":".join(("%12X" % ch)[i:i+2] for i in range(0, 12, 2))
 
 # Global Constants
+DIFF = 1
+SELECT_MENU = 1
+SELECT_MENU_END = 0
 SET_SPEED = 20
 INCREASE_RATE = 1
 SCREEN_HEIGHT = 600
@@ -125,69 +128,189 @@ class Cloud:
 
     def draw(self, SCREEN):
         SCREEN.blit(self.image, (self.x, self.y))
-
-class Difficult:
-    def difficult_menu(death_count):
-        global SET_SPEED, INCREASE_RATE
-        diff = 0
+class Option:
+    def option(death_count):
+        global SELECT_MENU, SELECT_MENU_END
+        SELECT_MENU = 1
+        SELECT_MENU_END = 4
         while True:
             SCREEN.fill((255, 255, 255))
+            font = pygame.font.Font('freesansbold.ttf', 30)
+            title_font = pygame.font.Font('freesansbold.ttf', 40)
+            option_text = title_font.render("Option", True, (0, 0, 0))
+            option_textRect = option_text.get_rect()
+            option_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 180)
+            SCREEN.blit(option_text, option_textRect)
+            if(SELECT_MENU == 1):
+                Menu_select = font.render(">", True, (0, 0, 0))
+                Menu_selectRect = Menu_select.get_rect()
+                Menu_selectRect.center = (SCREEN_WIDTH // 2 - 140, SCREEN_HEIGHT // 2 - 5)
+                SCREEN.blit(Menu_select, Menu_selectRect)
+            if(SELECT_MENU == 2):
+                Menu_select = font.render(">", True, (0, 0, 0))
+                Menu_selectRect = Menu_select.get_rect()
+                Menu_selectRect.center = (SCREEN_WIDTH // 2 - 130, SCREEN_HEIGHT // 2 + 45)
+                SCREEN.blit(Menu_select, Menu_selectRect)
+            if(SELECT_MENU == 3):
+                Menu_select = font.render(">", True, (0, 0, 0))
+                Menu_selectRect = Menu_select.get_rect()
+                Menu_selectRect.center = (SCREEN_WIDTH // 2 - 120, SCREEN_HEIGHT // 2 + 95)
+                SCREEN.blit(Menu_select, Menu_selectRect)
+            if(SELECT_MENU == 4):
+                Menu_select = font.render(">", True, (0, 0, 0))
+                Menu_selectRect = Menu_select.get_rect()
+                Menu_selectRect.center = (SCREEN_WIDTH // 2 - 120, SCREEN_HEIGHT // 2 + 145)
+                SCREEN.blit(Menu_select, Menu_selectRect)
+            diff_text = font.render("Change Difficult", True, (0, 0, 0))
+            diff_textRect = diff_text.get_rect()
+            diff_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
+            SCREEN.blit(diff_text, diff_textRect)
+            theme_text = font.render("Change Theme", True, (0, 0, 0))
+            theme_textRect = theme_text.get_rect()
+            theme_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 50)
+            SCREEN.blit(theme_text, theme_textRect)
+            reader_text = font.render("Readerboard", True, (0, 0, 0))
+            reader_textRect = reader_text.get_rect()
+            reader_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 100)
+            SCREEN.blit(reader_text, reader_textRect)
+            back_text = font.render("Back to Menu", True, (0, 0, 0))
+            back_textRect = back_text.get_rect()
+            back_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 150)
+            SCREEN.blit(back_text, back_textRect)
+            pygame.display.update()
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    run = False
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_UP:
+                        SELECT_MENU = SELECT_MENU - 1
+                        if SELECT_MENU <= 0:
+                            SELECT_MENU = SELECT_MENU_END
+                    if event.key == pygame.K_DOWN:
+                        SELECT_MENU = SELECT_MENU + 1
+                        if SELECT_MENU > SELECT_MENU_END:
+                            SELECT_MENU = 1
+                    if event.key == pygame.K_RETURN:
+                        if SELECT_MENU == 1:
+                            Option.difficult_menu(death_count)
+                        if SELECT_MENU == 2:
+                            print("미완성")
+                        if SELECT_MENU == 3:
+                            Option.score(death_count)
+                        if SELECT_MENU == 4:
+                            menu(death_count)
+    def difficult_menu(death_count):
+        global SET_SPEED, INCREASE_RATE, SELECT_MENU, SELECT_MENU_END, DIFF
+        SELECT_MENU_END = 5
+        while True:
+            SCREEN.fill((255, 255, 255))
+            font = pygame.font.Font('freesansbold.ttf', 30)
             main_font = pygame.font.Font('freesansbold.ttf', 40)
             diff_dis_font = pygame.font.Font('freesansbold.ttf', 25)
+            title_font = pygame.font.Font('freesansbold.ttf', 40)
             theme_main_text = main_font.render("Change difficult", True, (0, 0, 0))
             theme_main_textRect = theme_main_text.get_rect()
             theme_main_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 200)
             SCREEN.blit(theme_main_text, theme_main_textRect)
-            diff_dis1_text = diff_dis_font.render("Easy: press 1  Medium: press 2", True, (0, 0, 0))
-            diff_dis1_textRect = diff_dis1_text.get_rect()
-            diff_dis1_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2-30)
-            SCREEN.blit(diff_dis1_text, diff_dis1_textRect)
-            diff_dis2_text = diff_dis_font.render("Hard: press 3  VeryHard: press 4", True, (0, 0, 0))
-            diff_dis2_textRect = diff_dis2_text.get_rect()
-            diff_dis2_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 30)
-            SCREEN.blit(diff_dis2_text, diff_dis2_textRect)
-            diff_end_text = diff_dis_font.render("If you wand to Exit, press e", True, (0, 0, 0))
-            diff_end_textRect = diff_end_text.get_rect()
-            diff_end_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 100)
-            SCREEN.blit(diff_end_text, diff_end_textRect)
-
-            if(diff == 1):
+            if(SELECT_MENU == 1):
+                Menu_select = font.render(">", True, (0, 0, 0))
+                Menu_selectRect = Menu_select.get_rect()
+                Menu_selectRect.center = (SCREEN_WIDTH // 2 - 140, SCREEN_HEIGHT // 2 - 55)
+                SCREEN.blit(Menu_select, Menu_selectRect)
+            if(SELECT_MENU == 2):
+                Menu_select = font.render(">", True, (0, 0, 0))
+                Menu_selectRect = Menu_select.get_rect()
+                Menu_selectRect.center = (SCREEN_WIDTH // 2 - 140, SCREEN_HEIGHT // 2 - 5)
+                SCREEN.blit(Menu_select, Menu_selectRect)
+            if(SELECT_MENU == 3):
+                Menu_select = font.render(">", True, (0, 0, 0))
+                Menu_selectRect = Menu_select.get_rect()
+                Menu_selectRect.center = (SCREEN_WIDTH // 2 - 140, SCREEN_HEIGHT // 2 + 45)
+                SCREEN.blit(Menu_select, Menu_selectRect)
+            if(SELECT_MENU == 4):
+                Menu_select = font.render(">", True, (0, 0, 0))
+                Menu_selectRect = Menu_select.get_rect()
+                Menu_selectRect.center = (SCREEN_WIDTH // 2 - 140, SCREEN_HEIGHT // 2 + 95)
+                SCREEN.blit(Menu_select, Menu_selectRect)
+            if(SELECT_MENU == 5):
+                Menu_select = font.render(">", True, (0, 0, 0))
+                Menu_selectRect = Menu_select.get_rect()
+                Menu_selectRect.center = (SCREEN_WIDTH // 2 - 140, SCREEN_HEIGHT // 2 + 145)
+                SCREEN.blit(Menu_select, Menu_selectRect)
+            easy_text = font.render("Easy", True, (0, 0, 0))
+            easy_textRect = easy_text.get_rect()
+            easy_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 50)
+            SCREEN.blit(easy_text, easy_textRect)
+            medium_text = font.render("Medium", True, (0, 0, 0))
+            medium_textRect = medium_text.get_rect()
+            medium_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
+            SCREEN.blit(medium_text, medium_textRect)
+            hard_text = font.render("Hard", True, (0, 0, 0))
+            hard_textRect = hard_text.get_rect()
+            hard_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 50)
+            SCREEN.blit(hard_text, hard_textRect)
+            veryhard_text = font.render("VeryHard", True, (0, 0, 0))
+            veryhard_textRect = veryhard_text.get_rect()
+            veryhard_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 100)
+            SCREEN.blit(veryhard_text, veryhard_textRect)
+            back_text = font.render("Back to Option", True, (0, 0, 0))
+            back_textRect = back_text.get_rect()
+            back_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 150)
+            SCREEN.blit(back_text, back_textRect)
+            if(DIFF == 1):
                 diff_font = pygame.font.Font('freesansbold.ttf', 20)
                 # Easy 난이도
-                diff_text = diff_font.render("Difficult change to Easy", True, (0, 0, 0))
+                diff_text = diff_font.render("Difficulty: Easy", True, (0, 0, 0))
                 diff_textRect = diff_text.get_rect()
                 diff_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 200)
                 SCREEN.blit(diff_text, diff_textRect)
+                Menu_selected = font.render(chr(64), True, (0, 0, 0))
+                Menu_selectedRect = Menu_selected.get_rect()
+                Menu_selectedRect.center = (SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT // 2 - 55)
+                SCREEN.blit(Menu_selected, Menu_selectedRect)
                 # Easy Speed
                 SET_SPEED = 20 # Start Speed
                 INCREASE_RATE = 1 # 1 increase per 100 points.
-            if(diff == 2):
+            if(DIFF == 2):
                 diff_font = pygame.font.Font('freesansbold.ttf', 20)
                 # Medium 난이도
-                diff_text = diff_font.render("Difficult change to Medium", True, (0, 0, 0))
+                diff_text = diff_font.render("Difficulty: Medium", True, (0, 0, 0))
                 diff_textRect = diff_text.get_rect()
                 diff_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 200)
                 SCREEN.blit(diff_text, diff_textRect)
+                Menu_selected = font.render(chr(64), True, (0, 0, 0))
+                Menu_selectedRect = Menu_selected.get_rect()
+                Menu_selectedRect.center = (SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT // 2 - 5)
+                SCREEN.blit(Menu_selected, Menu_selectedRect)
                 # Medium Speed
                 SET_SPEED = 30
                 INCREASE_RATE = 1
-            if(diff == 3):
+            if(DIFF == 3):
                 diff_font = pygame.font.Font('freesansbold.ttf', 20)
                 # Hard 난이도
-                diff_text = diff_font.render("Difficult change to Hard", True, (0, 0, 0))
+                diff_text = diff_font.render("Difficulty: Hard", True, (0, 0, 0))
                 diff_textRect = diff_text.get_rect()
                 diff_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 200)
                 SCREEN.blit(diff_text, diff_textRect)
+                Menu_selected = font.render(chr(64), True, (0, 0, 0))
+                Menu_selectedRect = Menu_selected.get_rect()
+                Menu_selectedRect.center = (SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT // 2 + 45)
+                SCREEN.blit(Menu_selected, Menu_selectedRect)
                 # Hard Speed
                 SET_SPEED = 40
                 INCREASE_RATE = 2
-            if(diff == 4):
+            if(DIFF == 4):
                 diff_font = pygame.font.Font('freesansbold.ttf', 20)
                 # VeryHard 난이도
-                diff_text = diff_font.render("Difficult change to VeryHard", True, (0, 0, 0))
+                diff_text = diff_font.render("Difficulty: VeryHard", True, (0, 0, 0))
                 diff_textRect = diff_text.get_rect()
                 diff_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 200)
                 SCREEN.blit(diff_text, diff_textRect)
+                Menu_selected = font.render(chr(64), True, (0, 0, 0))
+                Menu_selectedRect = Menu_selected.get_rect()
+                Menu_selectedRect.center = (SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT // 2 + 95)
+                SCREEN.blit(Menu_selected, Menu_selectedRect)
                 # VeryHard Speed
                 SET_SPEED = 50
                 INCREASE_RATE = 3
@@ -198,25 +321,34 @@ class Difficult:
                     pygame.quit()
                     run = False
                 if event.type == pygame.KEYDOWN:
-                    # 키보드 1을 눌렀을 때
-                    if(pygame.key.name(event.key) == '1'):
-                        diff = 1
-                    if(pygame.key.name(event.key) == '2'):
-                        diff = 2
-                    if(pygame.key.name(event.key) == '3'):
-                        diff = 3
-                    if(pygame.key.name(event.key) == '4'):
-                        diff = 4
-                    if(pygame.key.name(event.key) == "e"):
-                        menu(death_count)
-
-
-
-
-class Score:
+                    if event.key == pygame.K_UP:
+                        SELECT_MENU = SELECT_MENU - 1
+                        if SELECT_MENU <= 0:
+                            SELECT_MENU = SELECT_MENU_END
+                    if event.key == pygame.K_DOWN:
+                        SELECT_MENU = SELECT_MENU + 1
+                        if SELECT_MENU > SELECT_MENU_END:
+                            SELECT_MENU = 1
+                    if event.key == pygame.K_RETURN:
+                        if SELECT_MENU == 1:
+                            DIFF = 1
+                        if SELECT_MENU == 2:
+                            DIFF = 2
+                        if SELECT_MENU == 3:
+                            DIFF = 3
+                        if SELECT_MENU == 4:
+                            DIFF = 4
+                        if SELECT_MENU == 5:
+                            Option.option(death_count)
     def score(death_count):
         font = pygame.font.Font('freesansbold.ttf', 40)
         score_font = pygame.font.Font('freesansbold.ttf', 20)
+        datas = {
+            "uid" : mac
+        }
+        url = "http://ec2-54-180-119-201.ap-northeast-2.compute.amazonaws.com/user/v1/info"
+        response = requests.post(url, data=datas)
+        SCORE = response.json()['Message']
         while True:
             SCREEN.fill((255, 255, 255))
             title_text = font.render("Score Board", True, (0, 0, 0))
@@ -230,19 +362,24 @@ class Score:
                     score_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 80 + (i*50))
                     SCREEN.blit(score_text, score_textRect)
                 else:
-                    score_text = score_font.render((str)(i+1) + ". " + (str)(SCORE[i]), True, (0, 0, 0))
+                    score_text = score_font.render((str)(i+1) + ". " + (str)(SCORE[i][0]), True, (0, 0, 0))
                     score_textRect = score_text.get_rect()
                     score_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 80 + (i*50))
                     SCREEN.blit(score_text, score_textRect)
-
+            title_text = score_font.render("Press Enter to Back", True, (0, 0, 0))
+            title_textRect = title_text.get_rect()
+            title_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 200)
+            SCREEN.blit(title_text, title_textRect)
             for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         pygame.quit()
                         run = False
                     if event.type == pygame.KEYDOWN:
-                        if(pygame.key.name(event.key) == "e"):
-                            menu(death_count)
+                        if event.key == pygame.K_RETURN:
+                            Option.option(death_count)
             pygame.display.update()
+
+
 
 class Obstacle:
     def __init__(self, image, type):
@@ -354,13 +491,12 @@ def main():
             obstacle.update()
             if player.dino_rect.colliderect(obstacle.rect):
                 pygame.time.delay(2000)
-                SCORE.append(points)
                 death_count += 1
                 datas = {
                     "uid" : mac,
                     "data" : points
                 }
-                url = "https://df9c-2001-2d8-6b27-2b4-d37-db4d-ae06-3479.ngrok.io/user/v1/data"
+                url = "http://ec2-54-180-119-201.ap-northeast-2.compute.amazonaws.com/user/v1/data"
                 response = requests.post(url, data=datas)
                 menu(death_count)
 
@@ -376,49 +512,66 @@ def main():
 
 
 def menu(death_count):
-    global points
+    global points, SELECT_MENU, SELECT_MENU_END
     run = True
-    SCORE.sort(reverse = True)
-
-    datas = {
-        "uid" : mac
-    }
-    url = "https://df9c-2001-2d8-6b27-2b4-d37-db4d-ae06-3479.ngrok.io/user/v1/data"
-    response = requests.post(url, data=datas)
+    SELECT_MENU = 1
+    SELECT_MENU_END = 2
     while run:
         SCREEN.fill((255, 255, 255))
         font = pygame.font.Font('freesansbold.ttf', 30)
-        if death_count == 0:
-            text = font.render("Press any Key to Start", True, (0, 0, 0))
-        elif death_count > 0:
-            text = font.render("Press any Key to Restart", True, (0, 0, 0))
+        info_font = pygame.font.Font('freesansbold.ttf', 20)
+        if death_count > 0:
             score = font.render("Your Score: " + str(points), True, (0, 0, 0))
             scoreRect = score.get_rect()
             scoreRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 50)
             SCREEN.blit(score, scoreRect)
-        diff_text = font.render("If you want to change difficult, press d", True, (0, 0, 0))
-        diff_textRect = diff_text.get_rect()
-        diff_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 100)
-        SCREEN.blit(diff_text, diff_textRect)
-        reader_text = font.render("If you want to show readerboard, press r", True, (0, 0, 0))
-        reader_textRect = reader_text.get_rect()
-        reader_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 150)
-        SCREEN.blit(reader_text, reader_textRect)
+        title_text = font.render("Dinosaur Game!", True, (0, 0, 0))
+        title_textRect = title_text.get_rect()
+        title_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
+        SCREEN.blit(title_text, title_textRect)
+        text = info_font.render("UP, DOWN: Move, Enter: Select", True, (0, 0, 0))
+        if(SELECT_MENU == 1):
+            Menu_select = font.render(">", True, (0, 0, 0))
+            Menu_selectRect = Menu_select.get_rect()
+            Menu_selectRect.center = (SCREEN_WIDTH // 2 - 50, SCREEN_HEIGHT // 2 + 95)
+            SCREEN.blit(Menu_select, Menu_selectRect)
+        if(SELECT_MENU == 2):
+            Menu_select = font.render(">", True, (0, 0, 0))
+            Menu_selectRect = Menu_select.get_rect()
+            Menu_selectRect.center = (SCREEN_WIDTH // 2 - 65, SCREEN_HEIGHT // 2 + 145)
+            SCREEN.blit(Menu_select, Menu_selectRect)
+        play_text = font.render("Play", True, (0, 0, 0))
+        play_textRect = play_text.get_rect()
+        play_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 100)
+        SCREEN.blit(play_text, play_textRect)
+        option_text = font.render("Option", True, (0, 0, 0))
+        option_textRect = option_text.get_rect()
+        option_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 150)
+        SCREEN.blit(option_text, option_textRect)
         textRect = text.get_rect()
-        textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
+        textRect.center = (SCREEN_WIDTH // 2 - 350, SCREEN_HEIGHT // 2 - 250)
         SCREEN.blit(text, textRect)
         SCREEN.blit(RUNNING[0], (SCREEN_WIDTH // 2 - 20, SCREEN_HEIGHT // 2 - 140))
+        click = False
         pygame.display.update()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 run = False
             if event.type == pygame.KEYDOWN:
-                if(pygame.key.name(event.key) == 'd'):
-                    Difficult.difficult_menu(death_count)
-                if(pygame.key.name(event.key) == 'r'):
-                    Score.score(death_count)
-                main()
+                if event.key == pygame.K_UP:
+                    SELECT_MENU = SELECT_MENU - 1
+                    if SELECT_MENU <= 0:
+                        SELECT_MENU = SELECT_MENU_END
+                if event.key == pygame.K_DOWN:
+                    SELECT_MENU = SELECT_MENU + 1
+                    if SELECT_MENU > SELECT_MENU_END:
+                        SELECT_MENU = 1
+                if event.key == pygame.K_RETURN:
+                    if SELECT_MENU == 1:
+                        main()
+                    if SELECT_MENU == 2:
+                        Option.option(death_count)
 
 
 menu(death_count=0)
