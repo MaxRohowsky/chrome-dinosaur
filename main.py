@@ -17,6 +17,8 @@ INCREASE_RATE = 1
 SCREEN_HEIGHT = 600
 SCREEN_WIDTH = 1100
 SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+SCREEN_BG = (255, 255, 255)
+FONT_COLOR = (0, 0, 0)
 
 RUNNING = [pygame.image.load(os.path.join("Assets/Dino", "DinoRun1.png")),
            pygame.image.load(os.path.join("Assets/Dino", "DinoRun2.png"))]
@@ -37,6 +39,10 @@ BIRD = [pygame.image.load(os.path.join("Assets/Bird", "Bird1.png")),
 CLOUD = pygame.image.load(os.path.join("Assets/Other", "Cloud.png"))
 
 BG = pygame.image.load(os.path.join("Assets/Other", "Track.png"))
+themeStatus = 1
+JUMP_SOUND = pygame.mixer.Sound(os.path.join("Assets/Soundtrack", "jump.wav"))
+SPEEDUP_SOUND = pygame.mixer.Sound(os.path.join("Assets/Soundtrack", "speedup.wav"))
+BG_MUSIC = pygame.mixer.Sound(os.path.join("Assets/Soundtrack", "Main_BGM.wav"))
 
 SCORE = []
 
@@ -77,6 +83,7 @@ class Dinosaur:
             self.dino_duck = False
             self.dino_run = False
             self.dino_jump = True
+            JUMP_SOUND.play() # 점프 사운드 한번 재생
         elif userInput[pygame.K_DOWN] and not self.dino_jump:
             self.dino_duck = True
             self.dino_run = False
@@ -128,6 +135,11 @@ class Cloud:
 
     def draw(self, SCREEN):
         SCREEN.blit(self.image, (self.x, self.y))
+
+
+
+
+
 class Option:
     def option(death_count):
         global SELECT_MENU, SELECT_MENU_END
@@ -195,7 +207,7 @@ class Option:
                         if SELECT_MENU == 1:
                             Option.difficult_menu(death_count)
                         if SELECT_MENU == 2:
-                            print("미완성")
+                            Option.selectTheme(death_count)
                         if SELECT_MENU == 3:
                             Option.score(death_count)
                         if SELECT_MENU == 4:
@@ -340,6 +352,240 @@ class Option:
                             DIFF = 4
                         if SELECT_MENU == 5:
                             Option.option(death_count)
+    
+
+    def selectTheme(death_count):
+        global RUNNING, JUMPING, DUCKING, SMALL_CACTUS, LARGE_CACTUS, BIRD, CLOUD, BG, SCREEN_BG, themeStatus, \
+            FONT_COLOR, JUMP_SOUND, BG_MUSIC, SPEEDUP_SOUND, SELECT_MENU, SELECT_MENU_END
+        SELECT_MENU = 1
+        SELECT_MENU_END = 5
+        while True:
+            SCREEN.fill((255, 255, 255))
+            font = pygame.font.Font('freesansbold.ttf', 30)
+            main_font = pygame.font.Font('freesansbold.ttf', 40)
+            diff_dis_font = pygame.font.Font('freesansbold.ttf', 25)
+            theme_main_text = main_font.render("Change Theme", True, (0, 0, 0))
+            theme_main_textRect = theme_main_text.get_rect()
+            theme_main_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 200)
+            SCREEN.blit(theme_main_text, theme_main_textRect)
+            # diff_dis1_text = diff_dis_font.render("Default: press 1  Supermario: press 2", True, (0, 0, 0))
+            # diff_dis1_textRect = diff_dis1_text.get_rect()
+            # diff_dis1_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 30)
+            # SCREEN.blit(diff_dis1_text, diff_dis1_textRect)
+            # diff_dis2_text = diff_dis_font.render("???: press 3  Night: press 4", True, (0, 0, 0))
+            # diff_dis2_textRect = diff_dis2_text.get_rect()
+            # diff_dis2_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 30)
+            # SCREEN.blit(diff_dis2_text, diff_dis2_textRect)
+            # diff_end_text = diff_dis_font.render("Exit : press E", True, (0, 0, 0))
+            # diff_end_textRect = diff_end_text.get_rect()
+            # diff_end_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 100)
+            # SCREEN.blit(diff_end_text, diff_end_textRect)
+            if(SELECT_MENU == 1):
+                Menu_select = font.render(">", True, (0, 0, 0))
+                Menu_selectRect = Menu_select.get_rect()
+                Menu_selectRect.center = (SCREEN_WIDTH // 2 - 140, SCREEN_HEIGHT // 2 - 55)
+                SCREEN.blit(Menu_select, Menu_selectRect)
+            if(SELECT_MENU == 2):
+                Menu_select = font.render(">", True, (0, 0, 0))
+                Menu_selectRect = Menu_select.get_rect()
+                Menu_selectRect.center = (SCREEN_WIDTH // 2 - 140, SCREEN_HEIGHT // 2 - 5)
+                SCREEN.blit(Menu_select, Menu_selectRect)
+            if(SELECT_MENU == 3):
+                Menu_select = font.render(">", True, (0, 0, 0))
+                Menu_selectRect = Menu_select.get_rect()
+                Menu_selectRect.center = (SCREEN_WIDTH // 2 - 140, SCREEN_HEIGHT // 2 + 45)
+                SCREEN.blit(Menu_select, Menu_selectRect)
+            if(SELECT_MENU == 4):
+                Menu_select = font.render(">", True, (0, 0, 0))
+                Menu_selectRect = Menu_select.get_rect()
+                Menu_selectRect.center = (SCREEN_WIDTH // 2 - 140, SCREEN_HEIGHT // 2 + 95)
+                SCREEN.blit(Menu_select, Menu_selectRect)
+            if(SELECT_MENU == 5):
+                Menu_select = font.render(">", True, (0, 0, 0))
+                Menu_selectRect = Menu_select.get_rect()
+                Menu_selectRect.center = (SCREEN_WIDTH // 2 - 140, SCREEN_HEIGHT // 2 + 145)
+                SCREEN.blit(Menu_select, Menu_selectRect)
+            easy_text = font.render("Default", True, (0, 0, 0))
+            easy_textRect = easy_text.get_rect()
+            easy_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 50)
+            SCREEN.blit(easy_text, easy_textRect)
+            medium_text = font.render("Supermario", True, (0, 0, 0))
+            medium_textRect = medium_text.get_rect()
+            medium_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
+            SCREEN.blit(medium_text, medium_textRect)
+            hard_text = font.render("???", True, (0, 0, 0))
+            hard_textRect = hard_text.get_rect()
+            hard_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 50)
+            SCREEN.blit(hard_text, hard_textRect)
+            veryhard_text = font.render("Night", True, (0, 0, 0))
+            veryhard_textRect = veryhard_text.get_rect()
+            veryhard_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 100)
+            SCREEN.blit(veryhard_text, veryhard_textRect)
+            back_text = font.render("Back to Option", True, (0, 0, 0))
+            back_textRect = back_text.get_rect()
+            back_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 150)
+            SCREEN.blit(back_text, back_textRect)
+            if (themeStatus == 1):
+                diff_font = pygame.font.Font('freesansbold.ttf', 20)
+                # 1번 : Default
+                diff_text = diff_font.render("Changed to Default Theme", True, (0, 0, 0))
+                diff_textRect = diff_text.get_rect()
+                diff_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 200)
+                SCREEN.blit(diff_text, diff_textRect)
+                # Assets Setting
+                SCREEN_BG = (255, 255, 255)
+                RUNNING = [pygame.image.load(os.path.join("Assets/Dino", "DinoRun1.png")),
+                           pygame.image.load(os.path.join("Assets/Dino", "DinoRun2.png"))]
+                JUMPING = pygame.image.load(os.path.join("Assets/Dino", "DinoJump.png"))
+                DUCKING = [pygame.image.load(os.path.join("Assets/Dino", "DinoDuck1.png")),
+                           pygame.image.load(os.path.join("Assets/Dino", "DinoDuck2.png"))]
+
+                SMALL_CACTUS = [pygame.image.load(os.path.join("Assets/Cactus", "SmallCactus1.png")),
+                                pygame.image.load(os.path.join("Assets/Cactus", "SmallCactus2.png")),
+                                pygame.image.load(os.path.join("Assets/Cactus", "SmallCactus3.png"))]
+                LARGE_CACTUS = [pygame.image.load(os.path.join("Assets/Cactus", "LargeCactus1.png")),
+                                pygame.image.load(os.path.join("Assets/Cactus", "LargeCactus2.png")),
+                                pygame.image.load(os.path.join("Assets/Cactus", "LargeCactus3.png"))]
+
+                BIRD = [pygame.image.load(os.path.join("Assets/Bird", "Bird1.png")),
+                        pygame.image.load(os.path.join("Assets/Bird", "Bird2.png"))]
+
+                CLOUD = pygame.image.load(os.path.join("Assets/Other", "Cloud.png"))
+
+                BG = pygame.image.load(os.path.join("Assets/Other", "Track.png"))
+
+                JUMP_SOUND = pygame.mixer.Sound(os.path.join("Assets/Soundtrack", "jump.wav"))
+                SPEEDUP_SOUND = pygame.mixer.Sound(os.path.join("Assets/Soundtrack", "speedup.wav"))
+                BG_MUSIC = pygame.mixer.Sound(os.path.join("Assets/Soundtrack", "Main_BGM.wav"))
+
+                Dinosaur.Y_POS_DUCK = 340
+                FONT_COLOR = (0, 0, 0)
+                Menu_selected = font.render(chr(64), True, (0, 0, 0))
+                Menu_selectedRect = Menu_selected.get_rect()
+                Menu_selectedRect.center = (SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT // 2 - 55)
+                SCREEN.blit(Menu_selected, Menu_selectedRect)
+            if (themeStatus == 2):
+                diff_font = pygame.font.Font('freesansbold.ttf', 20)
+                # 2번 : Supermario
+                diff_text = diff_font.render("Changed to Supermario Theme", True, (0, 0, 0))
+                diff_textRect = diff_text.get_rect()
+                diff_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 200)
+                SCREEN.blit(diff_text, diff_textRect)
+                SCREEN_BG = (77, 184, 255)
+                RUNNING = [pygame.image.load(os.path.join("Assets/Mario_Theme/Mario", "MarioRun1.png")),
+                           pygame.image.load(os.path.join("Assets/Mario_Theme/Mario", "MarioRun2.png"))]
+                JUMPING = pygame.image.load(os.path.join("Assets/Mario_Theme/Mario", "MarioJump.png"))
+                DUCKING = [pygame.image.load(os.path.join("Assets/Mario_Theme/Mario", "MarioDuck1.png")),
+                           pygame.image.load(os.path.join("Assets/Mario_Theme/Mario", "MarioDuck2.png"))]
+
+                SMALL_CACTUS = [pygame.image.load(os.path.join("Assets/Mario_Theme/M_Obstacle", "SmallTree.png")),
+                                pygame.image.load(os.path.join("Assets/Mario_Theme/M_Obstacle", "SmallTree2.png")),
+                                pygame.image.load(os.path.join("Assets/Mario_Theme/M_Obstacle", "LargeTree.png"))]
+                LARGE_CACTUS = [pygame.image.load(os.path.join("Assets/Mario_Theme/M_Obstacle", "GreenPipe.png")),
+                                pygame.image.load(os.path.join("Assets/Mario_Theme/M_Obstacle", "LargePipe.png")),
+                                pygame.image.load(os.path.join("Assets/Mario_Theme/M_Obstacle", "LargePipe2.png"))]
+
+                BIRD = [pygame.image.load(os.path.join("Assets/Mario_Theme/M_Bird", "Bird1.png")),
+                        pygame.image.load(os.path.join("Assets/Mario_Theme/M_Bird", "Bird2.png"))]
+
+                CLOUD = pygame.image.load(os.path.join("Assets/Mario_Theme/M_Other", "M_Cloud.png"))
+                BG = pygame.image.load(os.path.join("Assets/Mario_Theme/M_Other", "M_Track.png"))
+
+                JUMP_SOUND = pygame.mixer.Sound(os.path.join("Assets/Mario_Theme/Soundtrack", "M_Jump.wav"))
+                SPEEDUP_SOUND = pygame.mixer.Sound(os.path.join("Assets/Mario_Theme/Soundtrack", "Coin.wav"))
+                BG_MUSIC = pygame.mixer.Sound(os.path.join("Assets/Mario_Theme/Soundtrack", "M_BGM.wav"))
+                Dinosaur.Y_POS_DUCK = 320
+                FONT_COLOR = (0, 0, 0)
+                Menu_selected = font.render(chr(64), True, (0, 0, 0))
+                Menu_selectedRect = Menu_selected.get_rect()
+                Menu_selectedRect.center = (SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT // 2 - 5)
+                SCREEN.blit(Menu_selected, Menu_selectedRect)
+            if (themeStatus == 3):
+                diff_font = pygame.font.Font('freesansbold.ttf', 20)
+                # 3번 :
+                diff_text = diff_font.render("ComingSoon", True, (0, 0, 0))
+                diff_textRect = diff_text.get_rect()
+                diff_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 200)
+                SCREEN.blit(diff_text, diff_textRect)
+                Menu_selected = font.render(chr(64), True, (0, 0, 0))
+                Menu_selectedRect = Menu_selected.get_rect()
+                Menu_selectedRect.center = (SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT // 2 + 45)
+                SCREEN.blit(Menu_selected, Menu_selectedRect)
+            if (themeStatus == 4):
+                diff_font = pygame.font.Font('freesansbold.ttf', 20)
+                # 4번 :
+                diff_text = diff_font.render("Changed to Night Theme", True, (0, 0, 0))
+                diff_textRect = diff_text.get_rect()
+                diff_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 200)
+                SCREEN.blit(diff_text, diff_textRect)
+                # Assets Setting
+                SCREEN_BG = (53, 53, 53)
+                RUNNING = [pygame.image.load(os.path.join("Assets/Dino", "DinoRun1.png")),
+                           pygame.image.load(os.path.join("Assets/Dino", "DinoRun2.png"))]
+                JUMPING = pygame.image.load(os.path.join("Assets/Dino", "DinoJump.png"))
+                DUCKING = [pygame.image.load(os.path.join("Assets/Dino", "DinoDuck1.png")),
+                           pygame.image.load(os.path.join("Assets/Dino", "DinoDuck2.png"))]
+
+                SMALL_CACTUS = [pygame.image.load(os.path.join("Assets/Night/Cactus", "SmallCactus1.png")),
+                                pygame.image.load(os.path.join("Assets/Night/Cactus", "SmallCactus2.png")),
+                                pygame.image.load(os.path.join("Assets/Night/Cactus", "SmallCactus3.png"))]
+                LARGE_CACTUS = [pygame.image.load(os.path.join("Assets/Night/Cactus", "LargeCactus1.png")),
+                                pygame.image.load(os.path.join("Assets/Night/Cactus", "LargeCactus2.png")),
+                                pygame.image.load(os.path.join("Assets/Night/Cactus", "LargeCactus3.png"))]
+
+                BIRD = [pygame.image.load(os.path.join("Assets/Bird", "Bird1.png")),
+                        pygame.image.load(os.path.join("Assets/Bird", "Bird2.png"))]
+
+                CLOUD = pygame.image.load(os.path.join("Assets/Night/Other", "Cloud.png"))
+
+                BG = pygame.image.load(os.path.join("Assets/Night/Other", "Track.png"))
+
+                JUMP_SOUND = pygame.mixer.Sound(os.path.join("Assets/Soundtrack", "jump.wav"))
+                SPEEDUP_SOUND = pygame.mixer.Sound(os.path.join("Assets/Soundtrack", "speedup.wav"))
+                BG_MUSIC = pygame.mixer.Sound(os.path.join("Assets/Soundtrack", "Main_BGM.wav"))
+                Dinosaur.Y_POS_DUCK = 340
+                FONT_COLOR = (255, 255, 255)
+                Menu_selected = font.render(chr(64), True, (0, 0, 0))
+                Menu_selectedRect = Menu_selected.get_rect()
+                Menu_selectedRect.center = (SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT // 2 + 95)
+                SCREEN.blit(Menu_selected, Menu_selectedRect)
+            pygame.display.update()
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    run = False
+                if event.type == pygame.KEYDOWN:
+                    # # 키보드 1을 눌렀을 때
+                    # if (pygame.key.name(event.key) == '1'):
+                    #     themeStatus = 1
+                    # if (pygame.key.name(event.key) == '2'):
+                    #     themeStatus = 2
+                    # if (pygame.key.name(event.key) == '3'):
+                    #     themeStatus = 3
+                    # if (pygame.key.name(event.key) == '4'):
+                    #     themeStatus = 4
+                    # if (pygame.key.name(event.key) == "e"):
+                    #     menu(death_count)
+                    if event.key == pygame.K_UP:
+                        SELECT_MENU = SELECT_MENU - 1
+                        if SELECT_MENU <= 0:
+                            SELECT_MENU = SELECT_MENU_END
+                    if event.key == pygame.K_DOWN:
+                        SELECT_MENU = SELECT_MENU + 1
+                        if SELECT_MENU > SELECT_MENU_END:
+                            SELECT_MENU = 1
+                    if event.key == pygame.K_RETURN:
+                        if SELECT_MENU == 1:
+                            themeStatus = 1
+                        if SELECT_MENU == 2:
+                            themeStatus = 2
+                        if SELECT_MENU == 3:
+                            themeStatus = 3
+                        if SELECT_MENU == 4:
+                            themeStatus = 4
+                        if SELECT_MENU == 5:
+                            Option.option(death_count)
+    
     def score(death_count):
         font = pygame.font.Font('freesansbold.ttf', 40)
         score_font = pygame.font.Font('freesansbold.ttf', 20)
@@ -401,7 +647,14 @@ class SmallCactus(Obstacle):
     def __init__(self, image):
         self.type = random.randint(0, 2)
         super().__init__(image, self.type)
-        self.rect.y = 325
+        if(themeStatus == 0 or themeStatus == 1):
+            self.rect.y = 325
+        elif(themeStatus == 2):
+            self.rect.y = 290
+        elif(themeStatus == 3):
+            self.rect.y = 325
+        elif(themeStatus == 4):
+            self.rect.y = 325
 
 
 class LargeCactus(Obstacle):
@@ -444,14 +697,15 @@ def main():
     font = pygame.font.Font('freesansbold.ttf', 20)
     obstacles = []
     death_count = 0
-
+    BG_MUSIC.play(-1) # BGM 무한재생
     def score():
         global points, game_speed, INCREASE_RATE
         points += 1
         if points % 100 == 0:
             game_speed += INCREASE_RATE
-
-        text = font.render("Points: " + str(points), True, (0, 0, 0))
+            # 100점 마다 Alert Sound
+            SPEEDUP_SOUND.play()
+        text = font.render("Points: " + str(points), True, FONT_COLOR)
         textRect = text.get_rect()
         textRect.center = (1000, 40)
         SCREEN.blit(text, textRect)
@@ -470,9 +724,10 @@ def main():
     while run:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                BG_MUSIC.stop()
                 run = False
 
-        SCREEN.fill((255, 255, 255))
+        SCREEN.fill(SCREEN_BG)
         userInput = pygame.key.get_pressed()
 
         player.draw(SCREEN)
@@ -498,6 +753,7 @@ def main():
                 }
                 url = "http://ec2-54-180-119-201.ap-northeast-2.compute.amazonaws.com/user/v1/data"
                 response = requests.post(url, data=datas)
+                BG_MUSIC.stop()
                 menu(death_count)
 
         background()
