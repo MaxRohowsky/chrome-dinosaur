@@ -261,7 +261,7 @@ class Option:
             if(DIFF == 1):
                 diff_font = pygame.font.Font('freesansbold.ttf', 20)
                 # Easy 난이도
-                diff_text = diff_font.render("Difficult change to Easy", True, (0, 0, 0))
+                diff_text = diff_font.render("Difficulty: Easy", True, (0, 0, 0))
                 diff_textRect = diff_text.get_rect()
                 diff_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 200)
                 SCREEN.blit(diff_text, diff_textRect)
@@ -275,7 +275,7 @@ class Option:
             if(DIFF == 2):
                 diff_font = pygame.font.Font('freesansbold.ttf', 20)
                 # Medium 난이도
-                diff_text = diff_font.render("Difficult change to Medium", True, (0, 0, 0))
+                diff_text = diff_font.render("Difficulty: Medium", True, (0, 0, 0))
                 diff_textRect = diff_text.get_rect()
                 diff_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 200)
                 SCREEN.blit(diff_text, diff_textRect)
@@ -289,7 +289,7 @@ class Option:
             if(DIFF == 3):
                 diff_font = pygame.font.Font('freesansbold.ttf', 20)
                 # Hard 난이도
-                diff_text = diff_font.render("Difficult change to Hard", True, (0, 0, 0))
+                diff_text = diff_font.render("Difficulty: Hard", True, (0, 0, 0))
                 diff_textRect = diff_text.get_rect()
                 diff_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 200)
                 SCREEN.blit(diff_text, diff_textRect)
@@ -303,7 +303,7 @@ class Option:
             if(DIFF == 4):
                 diff_font = pygame.font.Font('freesansbold.ttf', 20)
                 # VeryHard 난이도
-                diff_text = diff_font.render("Difficult change to VeryHard", True, (0, 0, 0))
+                diff_text = diff_font.render("Difficulty: VeryHard", True, (0, 0, 0))
                 diff_textRect = diff_text.get_rect()
                 diff_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 200)
                 SCREEN.blit(diff_text, diff_textRect)
@@ -366,13 +366,16 @@ class Option:
                     score_textRect = score_text.get_rect()
                     score_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 80 + (i*50))
                     SCREEN.blit(score_text, score_textRect)
-
+            title_text = score_font.render("Press Enter to Back", True, (0, 0, 0))
+            title_textRect = title_text.get_rect()
+            title_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 200)
+            SCREEN.blit(title_text, title_textRect)
             for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         pygame.quit()
                         run = False
                     if event.type == pygame.KEYDOWN:
-                        if(pygame.key.name(event.key) == "e"):
+                        if event.key == pygame.K_RETURN:
                             Option.option(death_count)
             pygame.display.update()
 
