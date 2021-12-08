@@ -368,18 +368,6 @@ class Option:
             theme_main_textRect = theme_main_text.get_rect()
             theme_main_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 200)
             SCREEN.blit(theme_main_text, theme_main_textRect)
-            # diff_dis1_text = diff_dis_font.render("Default: press 1  Supermario: press 2", True, (0, 0, 0))
-            # diff_dis1_textRect = diff_dis1_text.get_rect()
-            # diff_dis1_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 30)
-            # SCREEN.blit(diff_dis1_text, diff_dis1_textRect)
-            # diff_dis2_text = diff_dis_font.render("???: press 3  Night: press 4", True, (0, 0, 0))
-            # diff_dis2_textRect = diff_dis2_text.get_rect()
-            # diff_dis2_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 30)
-            # SCREEN.blit(diff_dis2_text, diff_dis2_textRect)
-            # diff_end_text = diff_dis_font.render("Exit : press E", True, (0, 0, 0))
-            # diff_end_textRect = diff_end_text.get_rect()
-            # diff_end_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 100)
-            # SCREEN.blit(diff_end_text, diff_end_textRect)
             if(SELECT_MENU == 1):
                 Menu_select = font.render(">", True, (0, 0, 0))
                 Menu_selectRect = Menu_select.get_rect()
@@ -555,17 +543,6 @@ class Option:
                     pygame.quit()
                     run = False
                 if event.type == pygame.KEYDOWN:
-                    # # 키보드 1을 눌렀을 때
-                    # if (pygame.key.name(event.key) == '1'):
-                    #     themeStatus = 1
-                    # if (pygame.key.name(event.key) == '2'):
-                    #     themeStatus = 2
-                    # if (pygame.key.name(event.key) == '3'):
-                    #     themeStatus = 3
-                    # if (pygame.key.name(event.key) == '4'):
-                    #     themeStatus = 4
-                    # if (pygame.key.name(event.key) == "e"):
-                    #     menu(death_count)
                     if event.key == pygame.K_UP:
                         SELECT_MENU = SELECT_MENU - 1
                         if SELECT_MENU <= 0:
@@ -608,7 +585,7 @@ class Option:
                     score_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 80 + (i*50))
                     SCREEN.blit(score_text, score_textRect)
                 else:
-                    score_text = score_font.render((str)(i+1) + ". " + (str)(SCORE[i][0]), True, (0, 0, 0))
+                    score_text = score_font.render((str)(i+1) + ". " + (str)(SCORE[i]), True, (0, 0, 0))
                     score_textRect = score_text.get_rect()
                     score_textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 80 + (i*50))
                     SCREEN.blit(score_text, score_textRect)
