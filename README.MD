@@ -17,6 +17,7 @@ Made by [maxontech](https://twitter.com/max_on_tech)
 - [Installation](#installation)
 - [Controls](#controls)
 - [Libraries](#libraries)
+- [FAQ](#faq)
 - [Contact](#contact)
 
 ## YouTube Videos
@@ -56,6 +57,12 @@ Requirements: You must have Python installed and preferably a code editor like P
 ## Libraries
 
 - [pygame](https://www.pygame.org/news): Pygame is a cross-platform set of Python modules designed for writing video games.
+
+## FAQ
+- How to Open GitHub Projects in PyCharm? [Explained Here](https://youtu.be/cAnWazo5pFU)
+- How to use Virtual Environments? [Explained Here](https://youtu.be/2P30W3TN4nI)
+- How to install PyCharm and Python? [Explained Here](https://youtu.be/XsL8JDkH-ec)
+- How to set PyCharm Config. and Interpreter? [Explained Here](https://youtu.be/OajNS-WHiUI)
 
 ## Contact
 
