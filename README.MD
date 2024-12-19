@@ -8,7 +8,7 @@
 
 It's the game you see in the Chrome Browser, when you're offline. 
 
-Made by [maxontech](https://twitter.com/max_on_tech)
+Made by [maxrohowsky](https://twitter.com/maxrohowsky)
 
 ## Table of contents
 
@@ -66,4 +66,4 @@ Requirements: You must have Python installed and preferably a code editor like P
 
 ## Contact
 
-Feel free to reach out to me [on Twitter](https://twitter.com/max_on_tech) if you have any questions or feedback! Hope you find this useful!
+Feel free to reach out to me [on Twitter](https://twitter.com/maxrohowsky) if you have any questions or feedback! Hope you find this useful!
